@@ -16,7 +16,7 @@ import java.util.Objects;
 /**
  * Class to allow creation of QuickShop shops within quarters even if the underlying plot is not a shop
  */
-public class ShopCreateListener implements Listener {
+public class QuickShopHikariCreateListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onShopCreate(ShopCreateEvent event) {
         if (!event.isCancelled())

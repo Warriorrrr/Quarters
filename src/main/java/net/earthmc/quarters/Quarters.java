@@ -2,6 +2,7 @@ package net.earthmc.quarters;
 
 import co.aikar.commands.PaperCommandManager;
 import com.palmergames.bukkit.towny.object.metadata.MetadataLoader;
+import com.palmergames.util.JavaUtil;
 import net.earthmc.quarters.command.*;
 import net.earthmc.quarters.command.admin.*;
 import net.earthmc.quarters.config.Config;
@@ -9,7 +10,6 @@ import net.earthmc.quarters.listener.*;
 import net.earthmc.quarters.manager.SponsorCosmeticsManager;
 import net.earthmc.quarters.object.QuarterListDFDeserializer;
 import net.earthmc.quarters.object.QuarterListDataField;
-import net.earthmc.quarters.task.OutlineParticleTask;
 import org.bukkit.Material;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -86,8 +86,10 @@ public final class Quarters extends JavaPlugin {
         pm.registerEvents(new PlotPreClaimListener(), this);
         pm.registerEvents(new ResidentStatusScreenListener(), this);
 
-        if (pm.isPluginEnabled("QuickShop") || pm.isPluginEnabled("QuickShop-Hikari"))
-            pm.registerEvents(new ShopCreateListener(), this);
+        if (pm.isPluginEnabled("QuickShop-Hikari") && JavaUtil.classExists("com.ghostchu.quickshop.api.event.ShopCreateEvent"))
+            pm.registerEvents(new QuickShopHikariCreateListener(), this);
+        else if (pm.isPluginEnabled("QuickShop") && JavaUtil.classExists("org.maxgamer.quickshop.api.event.ShopCreateEvent"))
+            pm.registerEvents(new QuickShopRemakeCreateListener(), this);
 
         pm.registerEvents(new TownRemoveResidentListener(), this);
         pm.registerEvents(new TownStatusScreenListener(), this);
